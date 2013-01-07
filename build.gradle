@@ -1,0 +1,28 @@
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    scalaTools 'org.scala-lang:scala-compiler:2.9.2'
+    compile 'org.scala-lang:scala-library:2.9.2'
+
+    testCompile 'org.scalatest:scalatest_2.9.2:1.9.1'
+}
+
+task test(overwrite: true, dependsOn: compileTestScala) << {
+    ant.taskdef(
+        name: 'scalatest',
+        classname: 'org.scalatest.tools.ScalaTestAntTask',
+        classpath: configurations.testRuntime.asPath + ':' + compileScala.destinationDir
+    )
+    ant.scalatest(
+        runpath: "build/classes/test", // sourceSets.test.classesDir,
+        haltonfailure: 'true',
+        fork: 'false'
+    ) {
+        reporter(type: 'stdout')
+    }
+}
