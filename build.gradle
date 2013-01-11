@@ -1,18 +1,41 @@
 apply plugin: 'scala'
 apply plugin: 'idea'
 
+buildscript {
+    repositories{
+        maven{
+            url "https://raw.github.com/rodionmoiseev/maven-repo/master/repo/releases"
+        }
+    }
+    dependencies {
+        classpath group: 'org.rodion.gradle', name: 'idea-scala-plugin', version: '0.2'
+    }
+}
+
+apply plugin: 'idea-scala'
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    scalaApi 'org.scala-lang:scala-library:2.9.2'
+
     scalaTools 'org.scala-lang:scala-compiler:2.9.2'
-    compile 'org.scala-lang:scala-library:2.9.2'
+    scalaTools 'org.scala-lang:scala-library:2.9.2'
 
     testCompile 'org.scalatest:scalatest_2.9.2:1.9.1'
 }
 
-task test(overwrite: true, dependsOn: compileTestScala) << {
+ideaScala{
+    compiler {
+        fsc {
+            enable = true
+        }
+    }
+}
+
+task test(overwrite: true, dependsOn: testClasses) << {
     ant.taskdef(
         name: 'scalatest',
         classname: 'org.scalatest.tools.ScalaTestAntTask',
@@ -23,6 +46,6 @@ task test(overwrite: true, dependsOn: compileTestScala) << {
         haltonfailure: 'true',
         fork: 'false'
     ) {
-        reporter(type: 'stdout')
+        reporter(type: 'stderr')
     }
 }

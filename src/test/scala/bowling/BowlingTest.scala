@@ -1,3 +1,5 @@
+package bowling
+
 import org.scalatest._
 import matchers.ShouldMatchers
 
@@ -8,6 +10,6 @@ import matchers.ShouldMatchers
 class BowlingTest extends FlatSpec with ShouldMatchers {
   "A bowling game" should "score all misses zero" in {
     val game = new Bowling
-    0 should equal (1)
+    0 should equal (0)
   }
 }
