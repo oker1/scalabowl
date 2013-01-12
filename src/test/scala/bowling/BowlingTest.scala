@@ -10,6 +10,6 @@ import matchers.ShouldMatchers
 class BowlingTest extends FlatSpec with ShouldMatchers {
   "A bowling game" should "score all misses zero" in {
     val game = new Bowling
-    0 should equal (0)
+    game.score(List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)) should equal (0)
   }
 }

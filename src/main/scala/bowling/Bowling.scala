@@ -5,5 +5,7 @@ package bowling
  */
 
 class Bowling {
-
+  def score(game: List[Int]) = {
+    0
+  }
 }
