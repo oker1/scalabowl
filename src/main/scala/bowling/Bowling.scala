@@ -5,7 +5,7 @@ package bowling
  */
 
 class Bowling {
-  def score(game: List[Int]) = {
-    0
+  def score(game: List[Frame]) = {
+    game.map(_.score).sum
   }
 }
