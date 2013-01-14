@@ -14,9 +14,20 @@ class Bowling {
 
       val additionalScore = if (rest.nonEmpty) {
         if (current.isInstanceOf[Spare]) {
-          10 - current.asInstanceOf[Spare].firstScore
+          val next: Frame = rest.head
+          if (next.isInstanceOf[Spare]) {
+            next.asInstanceOf[Spare].firstScore
+          } else if (next.isInstanceOf[Bonus]) {
+            next.asInstanceOf[Bonus].bonusScore
+          } else {
+            next.score
+          }
         } else if (current.isInstanceOf[Strike]) {
-          score(rest.take(2))
+          rest.take(2).map((f: Frame) => if (f.isInstanceOf[Bonus]) {
+            f.asInstanceOf[Bonus].bonusScore
+          } else {
+            f.score
+          }).sum
         } else {
           0
         }

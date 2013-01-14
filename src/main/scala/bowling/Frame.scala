@@ -3,11 +3,10 @@ package bowling
 /**
  * @author Zsolt Takacs <zsolt@takacs.cc>
  */
-class Frame(val score: Int) {
-  def this(first: Int, second: Int) = {
-    this(first + second)
-  }
+class Frame(val first: Int, second: Int) {
+  val score = first + second
+
   def this(first: Int, second: String) = {
-    this(first)
+    this(first, 0)
   }
 }
