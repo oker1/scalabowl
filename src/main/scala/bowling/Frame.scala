@@ -9,7 +9,7 @@ object Frame {
 }
 
 case class Miss() extends Frame(0)
-case class Bonus(bonusScore: Int) extends Frame(0)
+case class Bonus(bonusScore: Int) extends Frame(bonusScore)
 case class Strike() extends Frame(10)
 case class TwoRolls(first: Int, second: Int) extends Frame(first + second) {
   def this(first: Int, second: String) = {

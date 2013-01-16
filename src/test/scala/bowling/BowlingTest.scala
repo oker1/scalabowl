@@ -58,6 +58,12 @@ class BowlingTest extends FlatSpec with ShouldMatchers with BeforeAndAfterEach {
       new Spare(5), new Spare(5), new Spare(5), new Spare(5), new Spare(5), new Bonus(5)
     )) should equal (150)
   }
+  it should "score an example correctly" in {
+    game.score(List(
+      new Miss(), new Spare(5), new TwoRolls(1,5), new Strike(), new TwoRolls(3,1),
+      new Strike(), new TwoRolls(2, "-"), new Miss(), new TwoRolls(5,3), new Spare(1), new Bonus(5)
+    )) should equal (72)
+  }
 
   override def beforeEach() {
     game = new Bowling

@@ -17,15 +17,12 @@ class Bowling {
           case Spare(_) :: tail => tail match {
             case Spare(firstScore) :: _ => firstScore
             case TwoRolls(x, y) :: _ => x
-            case List(Bonus(x), _*) => x
             case List(Frame(score), _*)      => score
             case Nil           => 0
           }
           case Strike() :: tail => tail match {
             case TwoRolls(x, y) :: _ => x + y
             case Spare(_) :: _ => 10
-            case List(Bonus(x), Bonus(y)) => x + y
-            case List(Frame(x), Bonus(y)) => x + y
             case List(Frame(f1), Frame(f2)) => f1 + f2
             case List(Frame(score))         => score
             case Nil           => 0
@@ -34,7 +31,12 @@ class Bowling {
           case Nil           => 0
         }
 
-      current.score + additionalScore + score(rest)
+      val currentScore = current match {
+        case Bonus(_) => 0
+        case Frame(x) => x
+      }
+
+      currentScore + additionalScore + score(rest)
     }
   }
 }
