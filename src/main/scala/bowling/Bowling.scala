@@ -12,29 +12,27 @@ class Bowling {
       val current = game.head
       val rest = game.drop(1)
 
-      val additionalScore = if (rest.nonEmpty) {
-        if (current.isInstanceOf[Spare]) {
-          val next: Frame = rest.head
-          if (next.isInstanceOf[Spare]) {
-            next.asInstanceOf[Spare].firstScore
-          } else if (next.isInstanceOf[Bonus]) {
-            next.asInstanceOf[Bonus].bonusScore
-          } else {
-            next.score
+      val additionalScore =
+        game.take(3) match {
+          case Spare(_) :: tail => tail match {
+            case Spare(firstScore) :: _ => firstScore
+            case TwoRolls(x, y) :: _ => x
+            case List(Bonus(x), _*) => x
+            case List(Frame(score), _*)      => score
+            case Nil           => 0
           }
-        } else if (current.isInstanceOf[Strike]) {
-          rest.take(2).map((f: Frame) => if (f.isInstanceOf[Bonus]) {
-            f.asInstanceOf[Bonus].bonusScore
-          } else {
-            f.score
-          }).sum
-        } else {
-          0
+          case Strike() :: tail => tail match {
+            case TwoRolls(x, y) :: _ => x + y
+            case Spare(_) :: _ => 10
+            case List(Bonus(x), Bonus(y)) => x + y
+            case List(Frame(x), Bonus(y)) => x + y
+            case List(Frame(f1), Frame(f2)) => f1 + f2
+            case List(Frame(score))         => score
+            case Nil           => 0
+          }
+          case Frame(_) :: _ => 0
+          case Nil           => 0
         }
-      } else {
-        0
-      }
-
 
       current.score + additionalScore + score(rest)
     }
